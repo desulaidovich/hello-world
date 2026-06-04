@@ -41,11 +41,12 @@ func Logging(log *zap.Logger) func(http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			start := time.Now()
 
+			logger := log
 			if id, ok := r.Context().Value(RequestIDKey).(string); ok && id != "" {
-				log = log.With(zap.String("request_id", id))
+				logger = log.With(zap.String("request_id", id))
 			}
 
-			log.Info(
+			logger.Info(
 				"request",
 				zap.String("method", r.Method),
 				zap.String("path", r.URL.Path),
@@ -58,7 +59,7 @@ func Logging(log *zap.Logger) func(http.Handler) http.Handler {
 
 			next.ServeHTTP(wrapped, r)
 
-			log.Info(
+			logger.Info(
 				"response",
 				zap.Int("status", wrapped.statusCode),
 				zap.Duration("duration", time.Since(start)),

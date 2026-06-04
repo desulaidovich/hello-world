@@ -1,0 +1,25 @@
+# binaries
+/bin/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# test cache
+*.test
+*.out
+
+# build artifacts
+*.o
+*.a
+
+# env
+.env
+.env.*
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo

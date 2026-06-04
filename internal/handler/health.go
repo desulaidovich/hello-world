@@ -18,14 +18,9 @@ func NewHealth(log *zap.Logger) *HealthHandler {
 }
 
 func (h *HealthHandler) Say(w http.ResponseWriter, _ *http.Request) {
-	body := map[string]any{
+	if err := response.OK(w, map[string]any{
 		"status": http.StatusText(http.StatusOK),
-	}
-
-	if err := response.OKRaw(w, body); err != nil {
-		h.log.Error(
-			"write liveness response",
-			zap.Error(err),
-		)
+	}); err != nil {
+		h.log.Error("write liveness response", zap.Error(err))
 	}
 }
